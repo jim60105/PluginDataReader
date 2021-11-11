@@ -1,0 +1,270 @@
+﻿@page "/"
+@using System.IO;
+@using ExtensibleSaveFormat;
+@using Sideloader.AutoResolver;
+@using static PluginDataReader.FileProcessor.TokenGuesser;
+
+@inject IJSRuntime JS
+@inject ILogger<Index> logger
+@inject IStringLocalizer<Index> Loc
+
+<div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
+	<header class="masthead mb-auto">
+		<Header></Header>
+	</header>
+
+	<main role="main" class="inner cover">
+		<div class="text-center">
+			<p class="lead">
+				@if (loading)
+				{
+					<div class="lds-dual-ring"></div>
+					<div>@Loc["Please be patient"]...</div>
+				}
+				<EditForm Model="this" @bind-hidden="loading">
+					<div class="d-flex justify-content-center">
+						<label>
+							<a class="btn btn-lg btn-outline-secondary text-white" style="font-size: xx-large;cursor:pointer">@Loc["Choose your png file"]</a>
+							<InputFile OnChange="@OnSelectedFile" accept="image/png" hidden></InputFile>
+						</label>
+					</div>
+				</EditForm>
+			</p>
+			@if (pngData.Length > 0)
+			{
+				<img id="resultImg" src="data:image;base64,@System.Convert.ToBase64String(pngData)" />
+				@if (null != dictionary && dictionary.Count > 0)
+				{
+					@foreach (var kvp in dictionary)
+					{
+						<div class="card w-100">
+							<div class="card-body">
+								<h5 class="card-title">@kvp.Key</h5>
+								<!--h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6-->
+								<p class="card-text">
+									@switch (kvp.Key)
+									{
+										case Sideloader.AutoResolver.UniversalAutoResolver.UARExtID:
+											(string, string, int)[]? sideloaders = UniversalAutoResolver.ResolveSideloaderData(dictionary);
+											@if(null == sideloaders || sideloaders.Length == 0)
+											{
+												break;
+											}
+											<table>
+												<thead>
+													<tr>
+														<th>Slot</th>
+														<th>GUID</th>
+														<th>Property</th>
+													</tr>
+												</thead>
+												<tbody>
+													@foreach (var (GUID, Property, Slot) in sideloaders)
+													{
+														<tr>
+															<td>@Slot</td>
+															<td>@GUID</td>
+															<td>@Property</td>
+														</tr>
+													}
+												</tbody>
+											</table>
+											break;
+										default:
+											break;
+									}
+								</p>
+							</div>
+						</div>
+					}
+				}
+				else
+				{
+					<p>
+						No Plugin Data!
+					</p>
+				}
+			}
+		</div>
+		<NoticeBox Title=@Loc["Notice"]>
+			@switch (System.Globalization.CultureInfo.CurrentCulture.TwoLetterISOLanguageName)
+			{
+				case "zh":
+					<div>
+						<hr />
+						<h4>Q: 你會如何使用我的存檔?</h4>
+						<p>
+							本工具使用<a href="https://docs.microsoft.com/zh-tw/aspnet/core/blazor/?view=aspnetcore-5.0#blazor-webassembly" target="_blank">Blazor wasm技術</a>實做，完全在瀏覧器內執行C#計算<br />
+							我不會將任何使用者資料傳回伺服器<br />
+							我不會取得你的存檔<br />
+							此頁面在<a href="https://github.com/jim60105/KK/tree/master/SaveLoadCompressionWeb">Github</a>上開源
+						</p>
+					</div>
+
+					<div>
+						<hr />
+						<h4>Q: 為何頁面會凍結?</h4>
+						<p>
+							<a href="https://docs.microsoft.com/zh-tw/aspnet/core/blazor/hosting-models?view=aspnetcore-5.0#blazor-webassembly" target="_blank">Blazor wasm是直接在UI thread上執行</a><br />
+							故長運算中無法更新頁面<br />
+							這是技術限制<br />
+							<b>請由F12開啟DevTools</b>，我會將執行狀態輸出在console中
+						</p>
+					</div>
+
+					<div>
+						<hr />
+						<h4>Q: 有沒有辦法減少運算時間?</h4>
+						<p>
+							遊戲內的運算效能，是在瀏覧器上執行時的數倍強。<br />
+							請使用<a href="https://blog.maki0419.com/2020/06/koikatu-save-load-compression.html" target="_blank">插件</a>。
+						</p>
+					</div>
+
+					<div>
+						<hr />
+						<h4>Q: 我該如何選擇要壓縮，或是解壓縮?</h4>
+						<p>
+							工具會自動判斷，將一般存檔壓縮；將壓縮檔解壓縮。
+						</p>
+					</div>
+
+					<div>
+						<hr />
+						<h4>Q: 請說明「執行比對」功能</h4>
+						<p>
+							啟用「執行比對」功能時，會在壓縮完畢後再解壓做內容比對，確保內容一致。<br />
+							禁用此功能可以節省時間，這只是個保險功能。<br />
+							補充參考，目前我尚未遇過比對失敗的案例。
+						</p>
+					</div>
+
+					break;
+				default:
+					<div>
+						<hr />
+						<h4>Q: How will you use my data?</h4>
+						<p>
+							This tool is implemented with <a href="https://docs.microsoft.com/zh-tw/aspnet/core/blazor/?view=aspnetcore-5.0#blazor-webassembly" target="_blank">Blazor WebAssembly technology</a> and performs C# calculations entirely in the browser.<br />
+							I will NOT send any user data back to the server.<br />
+							I will NOT get your data.<br />
+							This page is open source on <a href="https://github.com/jim60105/KK/tree/master/SaveLoadCompressionWeb">Github</a>.
+						</p>
+					</div>
+
+					<div>
+						<hr />
+						<h4>Q: Why does the page freeze?</h4>
+						<p>
+							<a href="https://docs.microsoft.com/zh-tw/aspnet/core/blazor/hosting-models?view=aspnetcore-5.0#blazor-webassembly" target="_blank">Blazor wasm is executed directly on the UI thread.</a><br />
+							Therefore, the page cannot be updated during long calculations.<br />
+							This is a technical limitation.<br />
+							<b>Please open DevTools by F12</b>, I will output the execution status in the console.
+						</p>
+					</div>
+
+					<div>
+						<hr />
+						<h4>Q: Is there a way to reduce computing time?</h4>
+						<p>
+							The computing performance in the game is several times stronger than when running on the browser.<br />
+							Please use the <a href="https://blog.maki0419.com/2020/06/koikatu-save-load-compression.html" target="_blank">in-game plugin</a>.
+						</p>
+					</div>
+
+					<div>
+						<hr />
+						<h4>Q: How do I choose to compress or decompress?</h4>
+						<p>
+							The tool will automatically determine, compress the general file; decompress the compressed file.
+						</p>
+					</div>
+
+					<div>
+						<hr />
+						<h4>Q: Please explain the "Do Comparison" function</h4>
+						<p>
+							When the "Do Comparison" is enabled, it will decompresse again after the compression is completed for content comparison to ensure that the content is consistent.<br />
+							Disabling this feature can save time, it's just an insurance feature.<br />
+							For additional reference, I haven't encountered any comparative failures.<br />
+						</p>
+					</div>
+
+					break;
+			}
+		</NoticeBox>
+	</main>
+
+	<footer class="mastfoot mt-auto text-center">
+		<div class="inner">
+			v21.11.11.0 <a href="https://jim60105.github.io/KK/LICENSE" target="_blank">Copyright © by 琳(jim60105) Since 2010.</a> Theme: <a href="https://getbootstrap.com/docs/4.5/examples/" target="_blank">Bootstrap 4 Example - Cover</a>
+		</div>
+	</footer>
+</div>
+
+@code {
+	private byte[] pngData = { };
+	private long inputFileSize = 0;
+	private string filename = "";
+	private bool loading = false;
+	private TimeSpan timeSpend;
+	Dictionary<string, PluginData>? dictionary = null;
+
+	private async void OnSelectedFile(InputFileChangeEventArgs e)
+	{
+		var startTime = DateTime.Now;
+		using (MemoryStream inputStream = new MemoryStream())
+		{
+			loading = true;
+			base.StateHasChanged();
+			await Task.Yield();
+
+			await e.File.OpenReadStream(524288000).CopyToAsync(inputStream);
+			filename = e.File.Name.Replace(".png", "");
+			inputFileSize = inputStream.Length;
+			logger.LogDebug("Input file length: {size}", inputStream.Length);
+
+			pngData = new byte[0];
+			inputStream.Seek(0, SeekOrigin.Begin);
+			using (BinaryReader binaryReader = new BinaryReader(inputStream))
+			{
+				pngData = PngFile.LoadPngBytes(binaryReader);
+				switch (TokenGuesser.GuessToken(binaryReader))
+				{
+					case Token.CoordinateToken:
+						dictionary = KoikatsuSunshine.Coordinate(binaryReader);
+						break;
+					case Token.CharaToken:
+						dictionary = KoikatsuSunshine.Chara(binaryReader);
+						break;
+					case Token.StudioToken:
+						dictionary = KoikatsuSunshine.Studio(binaryReader);
+						break;
+					case null:
+					default:
+						logger.LogInformation("Cannot detect the file.");
+						break;
+				}
+
+				if (null != dictionary)
+				{
+					//foreach (var kvp in dictionary)
+					//{
+					//	logger.LogInformation($"Found PluginData {kvp.Key}");
+					//}
+					//UniversalAutoResolver.ResolveSideloaderData(dictionary);
+				}
+				else
+				{
+					dictionary = new();
+					logger.LogInformation("No Extended Data found");
+				}
+			}
+			logger.LogInformation("Process finish");
+			timeSpend = DateTime.Now - startTime;
+			loading = false;
+			base.StateHasChanged();
+		}
+	}
+}
+

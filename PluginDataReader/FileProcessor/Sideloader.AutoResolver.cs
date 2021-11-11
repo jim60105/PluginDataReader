@@ -1,5 +1,4 @@
 ﻿using ExtensibleSaveFormat;
-using MessagePack;
 
 namespace Sideloader.AutoResolver
 {
@@ -17,7 +16,7 @@ namespace Sideloader.AutoResolver
         /// </summary>
         public const string UARExtIDOld = "EC.Core.Sideloader.UniversalAutoResolver";
 
-        public static void ResolveSideloaderData(Dictionary<string, PluginData> dictionary)
+        public static (string, string, int)[]? ResolveSideloaderData(Dictionary<string, PluginData> dictionary)
         {
             if (!dictionary.TryGetValue(UARExtIDOld, out var extData))
             {
@@ -33,8 +32,13 @@ namespace Sideloader.AutoResolver
                 Console.WriteLine($"Sideloader marker found, external info count: {extInfo.Count}");
 
                 foreach (ResolveInfo info in extInfo)
+                {
                     Console.WriteLine($"External info: {info.GUID} : {info.Property} : {info.Slot}");
+                }
+                return extInfo.Select(p => (p.GUID, p.Property, p.Slot)).ToArray();
             }
+
+            return null;
         }
     }
 }

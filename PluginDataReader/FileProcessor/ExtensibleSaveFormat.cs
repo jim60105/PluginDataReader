@@ -1,9 +1,9 @@
-﻿using ConsoleApp1.Models;
+﻿using PluginDataReader.Models;
 using MessagePack;
 
 namespace ExtensibleSaveFormat
 {
-    public class ExtendedSave
+    public static class ExtendedSave
     {
         /// <summary> Marker that indicates the extended save region on cards </summary>
         public const string Marker = "KKEx";

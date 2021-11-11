@@ -1,4 +1,4 @@
-﻿namespace ConsoleApp1.FileProcessor
+﻿namespace PluginDataReader.FileProcessor
 {
     public static class PngFile
     {

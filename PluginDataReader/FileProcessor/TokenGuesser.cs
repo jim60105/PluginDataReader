@@ -1,6 +1,6 @@
-﻿namespace ConsoleApp1.FileProcessor
+﻿namespace PluginDataReader.FileProcessor
 {
-    internal class TokenGuesser
+    internal static class TokenGuesser
     {
         public struct Token
         {

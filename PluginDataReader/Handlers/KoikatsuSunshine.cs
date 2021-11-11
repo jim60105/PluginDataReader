@@ -1,12 +1,12 @@
-﻿using ConsoleApp1.FileProcessor;
-using ConsoleApp1.Models;
+﻿using PluginDataReader.FileProcessor;
+using PluginDataReader.Models;
 using ExtensibleSaveFormat;
 using MessagePack;
 using System.Text;
 
-namespace ConsoleApp1.Handlers
+namespace PluginDataReader.Handlers
 {
-    internal class KoikatsuSunshine
+    internal static class KoikatsuSunshine
     {
         public static readonly Version ChaFileVersion = new("0.0.0");
         public static readonly Version ChaFileClothesVersion = new("0.0.2");

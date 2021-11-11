@@ -1,0 +1,18 @@
+version: '3.7'
+
+services:
+  PluginDataReader:
+    image: jim60105/PluginDataReader
+    restart: always
+    environment:
+      - VIRTUAL_HOST=PluginDataReader.maki0419.com
+      - LETSENCRYPT_HOST=PluginDataReader.maki0419.com
+      - LETSENCRYPT_EMAIL=jim60105@gmail.com
+      - LETSENCRYPT_TEST=true
+    networks:
+      - proxy-tier
+
+networks:
+  proxy-tier:
+    external: true
+    name: proxy-tier

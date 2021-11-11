@@ -1,6 +1,6 @@
 ﻿using MessagePack;
 
-namespace ConsoleApp1.Models
+namespace PluginDataReader.Models
 {
     // Token: 0x0200011C RID: 284
     [MessagePackObject(true)]
