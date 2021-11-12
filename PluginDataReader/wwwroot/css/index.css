@@ -82,10 +82,6 @@ body {
     box-shadow: inset 0 0 5rem rgba(0, 0, 0, .5);
 }
 
-    body > div.w-100.h-100 {
-        overflow-y: scroll;
-    }
-
 .cover-container {
     max-width: 80vw;
 }

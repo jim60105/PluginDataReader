@@ -46,7 +46,7 @@
 									{
 										case Sideloader.AutoResolver.UniversalAutoResolver.UARExtID:
 											(string, string, int)[]? sideloaders = UniversalAutoResolver.ResolveSideloaderData(dictionary);
-											@if(null == sideloaders || sideloaders.Length == 0)
+											@if (null == sideloaders || sideloaders.Length == 0)
 											{
 												break;
 											}
@@ -81,7 +81,12 @@
 				else
 				{
 					<p>
-						No Plugin Data!
+						<div class="alert alert-secondary" role="alert">
+							<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-exclamation-triangle-fill flex-shrink-0 me-2" viewBox="0 0 16 16" role="img" aria-label="Warning:">
+								<path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z" />
+							</svg>
+							No Plugin Data!
+						</div>
 					</p>
 				}
 			}
@@ -91,13 +96,12 @@
 			{
 				case "zh":
 					<div>
-						<hr />
 						<h4>Q: 你會如何使用我的存檔?</h4>
 						<p>
 							本工具使用<a href="https://docs.microsoft.com/zh-tw/aspnet/core/blazor/?view=aspnetcore-5.0#blazor-webassembly" target="_blank">Blazor wasm技術</a>實做，完全在瀏覧器內執行C#計算<br />
 							我不會將任何使用者資料傳回伺服器<br />
 							我不會取得你的存檔<br />
-							此頁面在<a href="https://github.com/jim60105/KK/tree/master/SaveLoadCompressionWeb">Github</a>上開源
+							此頁面在<a href="https://github.com/jim60105/KK">Github</a>上開源
 						</p>
 					</div>
 
@@ -107,48 +111,18 @@
 						<p>
 							<a href="https://docs.microsoft.com/zh-tw/aspnet/core/blazor/hosting-models?view=aspnetcore-5.0#blazor-webassembly" target="_blank">Blazor wasm是直接在UI thread上執行</a><br />
 							故長運算中無法更新頁面<br />
-							這是技術限制<br />
-							<b>請由F12開啟DevTools</b>，我會將執行狀態輸出在console中
+							這是技術限制，請耐心等待
 						</p>
 					</div>
-
-					<div>
-						<hr />
-						<h4>Q: 有沒有辦法減少運算時間?</h4>
-						<p>
-							遊戲內的運算效能，是在瀏覧器上執行時的數倍強。<br />
-							請使用<a href="https://blog.maki0419.com/2020/06/koikatu-save-load-compression.html" target="_blank">插件</a>。
-						</p>
-					</div>
-
-					<div>
-						<hr />
-						<h4>Q: 我該如何選擇要壓縮，或是解壓縮?</h4>
-						<p>
-							工具會自動判斷，將一般存檔壓縮；將壓縮檔解壓縮。
-						</p>
-					</div>
-
-					<div>
-						<hr />
-						<h4>Q: 請說明「執行比對」功能</h4>
-						<p>
-							啟用「執行比對」功能時，會在壓縮完畢後再解壓做內容比對，確保內容一致。<br />
-							禁用此功能可以節省時間，這只是個保險功能。<br />
-							補充參考，目前我尚未遇過比對失敗的案例。
-						</p>
-					</div>
-
 					break;
 				default:
 					<div>
-						<hr />
 						<h4>Q: How will you use my data?</h4>
 						<p>
 							This tool is implemented with <a href="https://docs.microsoft.com/zh-tw/aspnet/core/blazor/?view=aspnetcore-5.0#blazor-webassembly" target="_blank">Blazor WebAssembly technology</a> and performs C# calculations entirely in the browser.<br />
 							I will NOT send any user data back to the server.<br />
 							I will NOT get your data.<br />
-							This page is open source on <a href="https://github.com/jim60105/KK/tree/master/SaveLoadCompressionWeb">Github</a>.
+							This page is open source on <a href="https://github.com/jim60105/KK">Github</a>.
 						</p>
 					</div>
 
@@ -158,38 +132,10 @@
 						<p>
 							<a href="https://docs.microsoft.com/zh-tw/aspnet/core/blazor/hosting-models?view=aspnetcore-5.0#blazor-webassembly" target="_blank">Blazor wasm is executed directly on the UI thread.</a><br />
 							Therefore, the page cannot be updated during long calculations.<br />
-							This is a technical limitation.<br />
-							<b>Please open DevTools by F12</b>, I will output the execution status in the console.
+							This is a technical limitation.
+							Please be patient.
 						</p>
 					</div>
-
-					<div>
-						<hr />
-						<h4>Q: Is there a way to reduce computing time?</h4>
-						<p>
-							The computing performance in the game is several times stronger than when running on the browser.<br />
-							Please use the <a href="https://blog.maki0419.com/2020/06/koikatu-save-load-compression.html" target="_blank">in-game plugin</a>.
-						</p>
-					</div>
-
-					<div>
-						<hr />
-						<h4>Q: How do I choose to compress or decompress?</h4>
-						<p>
-							The tool will automatically determine, compress the general file; decompress the compressed file.
-						</p>
-					</div>
-
-					<div>
-						<hr />
-						<h4>Q: Please explain the "Do Comparison" function</h4>
-						<p>
-							When the "Do Comparison" is enabled, it will decompresse again after the compression is completed for content comparison to ensure that the content is consistent.<br />
-							Disabling this feature can save time, it's just an insurance feature.<br />
-							For additional reference, I haven't encountered any comparative failures.<br />
-						</p>
-					</div>
-
 					break;
 			}
 		</NoticeBox>
@@ -203,15 +149,15 @@
 </div>
 
 @code {
-	private byte[] pngData = { };
-	private long inputFileSize = 0;
-	private string filename = "";
-	private bool loading = false;
-	private TimeSpan timeSpend;
-	Dictionary<string, PluginData>? dictionary = null;
+    private byte[] pngData = { };
+    private long inputFileSize = 0;
+    private string filename = "";
+    private bool loading = false;
+    private TimeSpan timeSpend;
+    Dictionary<string, PluginData>? dictionary = null;
 
-	private async void OnSelectedFile(InputFileChangeEventArgs e)
-	{
+    private async void OnSelectedFile(InputFileChangeEventArgs e)
+    {
 		var startTime = DateTime.Now;
 		using (MemoryStream inputStream = new MemoryStream())
 		{
@@ -263,6 +209,7 @@
 			logger.LogInformation("Process finish");
 			timeSpend = DateTime.Now - startTime;
 			loading = false;
+			await JS.InvokeVoidAsync("indexJs.noticeBoxtoggleDisplay", false).ConfigureAwait(false);
 			base.StateHasChanged();
 		}
 	}
