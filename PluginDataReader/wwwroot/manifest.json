@@ -3,14 +3,26 @@
   "short_name": "PluginDataReader",
   "start_url": "./",
   "display": "standalone",
-  "background_color": "#ffffff",
-  "theme_color": "#03173d",
+  "background_color": "#333333",
+  "theme_color": "#3b3c3d",
+  "description": "Read the BepInEx extended plugin data from Illusion png game files.",
   "prefer_related_applications": false,
   "icons": [
+    {
+      "src": "icon512.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    },
+    {
+      "src": "icon192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
     {
       "src": "favicon.png",
       "type": "image/png",
       "sizes": "32x32"
     }
+
   ]
 }
