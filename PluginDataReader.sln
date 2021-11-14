@@ -5,6 +5,12 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PluginDataReader", "PluginDataReader\PluginDataReader.csproj", "{7C3D51E7-B9AC-4046-8E1E-3745B2908C8F}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github", ".github", "{1427DAA4-DEA4-4B9F-A1E9-7EB7E52C026E}"
+	ProjectSection(SolutionItems) = preProject
+		.github\workflows\docker_publish.yml = .github\workflows\docker_publish.yml
+		.github\workflows\gh-page.yml = .github\workflows\gh-page.yml
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
