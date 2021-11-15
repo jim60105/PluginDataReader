@@ -5,10 +5,10 @@
         public struct Token
         {
             //https://github.com/IllusionMods/DragAndDrop/blob/v1.2/src/DragAndDrop.Koikatu/DragAndDrop.cs#L12
-            public const string StudioToken = "【KStudio】";
-            public const string CharaToken = "【KoiKatuChara";
-            public const string SexToken = "sex";
-            public const string CoordinateToken = "【KoiKatuClothes】";
+            public const string Studio = "【KStudio】";
+            public const string Chara = "【KoiKatuChara";
+            public const string Sex = "sex";
+            public const string Coordinate = "【KoiKatuClothes】";
             //private const string PoseToken = "【pose】";
         }
 
@@ -25,18 +25,18 @@
                 int r = binaryReader.ReadInt32();
                 if (r is not 101 and not 100)
                 {
-                    return Token.StudioToken;
+                    return Token.Studio;
                 }
                 string token = binaryReader.ReadString();
-                if (token.Contains(Token.CharaToken))
+                if (token.Contains(Token.Chara))
                 {
                     // 這裡不知道角色性別，直接給1(女性)
                     // 跨性別讀取基本上夠完善，我想可以略過判別
-                    return Token.CharaToken;
+                    return Token.Chara;
                 }
-                else if (token == Token.CoordinateToken)
+                else if (token == Token.Coordinate)
                 {
-                    return Token.CoordinateToken;
+                    return Token.Coordinate;
                 }
             }
             finally

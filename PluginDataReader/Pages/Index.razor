@@ -7,6 +7,7 @@
 @inject IJSRuntime JS
 @inject ILogger<Index> logger
 @inject IStringLocalizer<Index> Loc
+@inject KoikatuAndKoikatsuSunshineHandler kkHandler
 
 <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
     <header class="masthead mb-auto">
@@ -197,14 +198,14 @@
                 pngData = PngFile.LoadPngBytes(binaryReader);
                 switch (TokenGuesser.GuessToken(binaryReader))
                 {
-                    case Token.CoordinateToken:
-                        dictionary = KoikatsuSunshine.Coordinate(binaryReader);
+                    case Token.Coordinate:
+                        dictionary = kkHandler.Coordinate(binaryReader);
                         break;
-                    case Token.CharaToken:
-                        dictionary = KoikatsuSunshine.Chara(binaryReader);
+                    case Token.Chara:
+                        dictionary = kkHandler.Chara(binaryReader);
                         break;
-                    case Token.StudioToken:
-                        dictionary = KoikatsuSunshine.Studio(binaryReader);
+                    case Token.Studio:
+                        dictionary = kkHandler.Studio(binaryReader);
                         break;
                     case null:
                     default:
