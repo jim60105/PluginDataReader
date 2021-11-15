@@ -76,3 +76,4 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.CR_PAT }}
           BRANCH: gh-pages
           FOLDER: release/wwwroot
+          SINGLE_COMMIT: true
