@@ -46,8 +46,8 @@
                                     @switch (kvp.Key)
                                     {
                                         case Sideloader.AutoResolver.UniversalAutoResolver.UARExtID:
-                                            (string, string, int)[]? sideloaders = UniversalAutoResolver.ResolveSideloaderData(dictionary);
-                                            @if (null == sideloaders || sideloaders.Length == 0)
+                                            (string, string, int)[] sideloaders = UniversalAutoResolver.ResolveSideloaderData(dictionary);
+                                            @if (sideloaders.Length == 0)
                                             {
                                                 break;
                                             }
@@ -213,15 +213,7 @@
                         break;
                 }
 
-                if (null != dictionary)
-                {
-                    //foreach (var kvp in dictionary)
-                    //{
-                    //	logger.LogInformation($"Found PluginData {kvp.Key}");
-                    //}
-                    //UniversalAutoResolver.ResolveSideloaderData(dictionary);
-                }
-                else
+                if (null == dictionary)
                 {
                     dictionary = new();
                     logger.LogInformation("No Extended Data found");

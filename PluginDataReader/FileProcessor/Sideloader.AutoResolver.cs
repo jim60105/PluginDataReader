@@ -16,7 +16,12 @@ namespace Sideloader.AutoResolver
         /// </summary>
         public const string UARExtIDOld = "EC.Core.Sideloader.UniversalAutoResolver";
 
-        public static (string, string, int)[]? ResolveSideloaderData(Dictionary<string, PluginData> dictionary)
+        /// <summary>
+        /// 解析Sideloader資料
+        /// </summary>
+        /// <param name="dictionary"></param>
+        /// <returns>(GUID, Property, Slot)</returns>
+        public static (string, string, int)[] ResolveSideloaderData(Dictionary<string, PluginData> dictionary)
         {
             if (!dictionary.TryGetValue(UARExtIDOld, out var extData))
             {
@@ -38,7 +43,7 @@ namespace Sideloader.AutoResolver
                 return extInfo.Select(p => (p.GUID, p.Property, p.Slot)).ToArray();
             }
 
-            return null;
+            return Array.Empty<(string, string, int)>();
         }
     }
 }
