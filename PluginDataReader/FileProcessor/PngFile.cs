@@ -108,7 +108,9 @@
             long pngSize = GetPngSize(br);
             if (pngSize == 0L)
             {
+#pragma warning disable CS8603 // 可能有 Null 參考傳回。
                 return null;
+#pragma warning restore CS8603 // 可能有 Null 參考傳回。
             }
 
             return br.ReadBytes((int)pngSize);

@@ -21,7 +21,9 @@ namespace PluginDataReader.Models
         // Token: 0x06000A89 RID: 2697 RVA: 0x0004A2B0 File Offset: 0x000484B0
         public BlockHeader.Info SearchInfo(string name)
         {
+#pragma warning disable CS8603 // 可能有 Null 參考傳回。
             return this.lstInfo.Find((BlockHeader.Info n) => n.name == name);
+#pragma warning restore CS8603 // 可能有 Null 參考傳回。
         }
 
         // Token: 0x02000B67 RID: 2919
