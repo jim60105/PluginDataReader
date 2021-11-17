@@ -23,7 +23,7 @@
     background: rgba(34, 34, 34, 0.867) none repeat scroll 0% 0%;
     transition: all 1s ease 0s;
     width: 35vw;
-    bottom: 1vh;
+    bottom: 0px;
     display: unset;
     max-height: 90vh;
     padding: 30px;
