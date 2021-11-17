@@ -36,9 +36,10 @@
                 <img id="resultImg" src="data:image;base64,@System.Convert.ToBase64String(pngData)" />
                 @if (null != dictionary && dictionary.Count > 0)
                 {
+                    <div class="card-group">
                     @foreach (var kvp in dictionary)
                     {
-                        <div class="card w-100">
+                        <div class="card">
                             <div class="card-body">
                                 <h5 class="card-title">@kvp.Key</h5>
                                 <!--h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6-->
@@ -79,6 +80,7 @@
                             </div>
                         </div>
                     }
+                    </div>
                 }
                 else
                 {
