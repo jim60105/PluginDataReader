@@ -1,4 +1,5 @@
 ﻿using ExtensibleSaveFormat;
+using System.Collections;
 using System.Text.Json;
 
 namespace PluginDataReader.FileProcessor
@@ -12,46 +13,56 @@ namespace PluginDataReader.FileProcessor
             {
                 Console.WriteLine($"\nTry resolve unknown extended data: {ExtID}");
 
-                result = JsonSerializer.Serialize(DeserializeDictionary(dict) as Dictionary<string, object>);
+                result = JsonSerializer.Serialize(DeserializeDataRecursively(dict));
             }
 
             Console.WriteLine(result);
             return result;
         }
 
-        private static object DeserializeDictionary(dynamic o)
+        private static object? DeserializeDataRecursively(dynamic? o)
         {
-            if (o is not IDictionary<string, object> dict
-                || dict.Count == 0
-                || dict.First().Value is not byte[])
-            {
-                return o;
-            }
-
-            Dictionary<string, object> newDict = new();
-            foreach (var kvp in dict)
-            {
-                object tmp = kvp.Value;
-                if (kvp.Value is byte[] b
-                    && b.Length > 0)
+            switch (o)
                 {
-                    if (b.Length > 1000000)
-                    {
-                        newDict.Add(kvp.Key, $"byte[{(kvp.Value as byte[])?.Length ?? 0}] (It is too big to be parsed. Usually, it may contain some graphics.)");
-                        continue;
-                    }
+                case byte[] b when b.Length == 0:
+                    return $"byte[0]";
+
+                case byte[] b:
                     try
                     {
-                        tmp = MessagePack.MessagePackSerializer.Deserialize<dynamic>(b);
+                        return DeserializeDataRecursively(MessagePack.MessagePackSerializer.Deserialize<dynamic>(b));
                     }
-                    catch (MessagePack.MessagePackSerializationException) { }
-                }
-                tmp = DeserializeDictionary(tmp);
-                newDict.Add(kvp.Key, tmp);
+                    catch (MessagePack.MessagePackSerializationException)
+                    {
+                        return $"byte[{b.Length}]";
+                    }
+
+                case string s when s.Length > 500:
+                    return $"string[{s.Length}] (Too big to display)";
+
+                case IDictionary dict when dict.Count != 0:
+                    Dictionary<object, object> newDict = new();
+                    foreach (DictionaryEntry kvp in dict)
+                    {
+                        object? tmp = kvp.Value;
+                        tmp = DeserializeDataRecursively(tmp);
+                        newDict.Add(kvp.Key, tmp);
+                    }
+
+                    return newDict;
+
+                case object[] oArray when oArray.Length != 0:
+                    List<object> list = new();
+                    foreach (object _o in oArray)
+                    {
+                        list.Add(DeserializeDataRecursively(_o));
+                    }
+
+                    return list.ToArray();
+
+                default:
+                    return o;
             }
-
-            return newDict;
         }
-
     }
 }
