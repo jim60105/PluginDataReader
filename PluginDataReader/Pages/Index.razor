@@ -184,6 +184,8 @@
         using (MemoryStream inputStream = new MemoryStream())
         {
             loading = true;
+            dictionary = null;
+            pngData = new byte[0];
             base.StateHasChanged();
             await Task.Yield();
 
@@ -192,7 +194,6 @@
             inputFileSize = inputStream.Length;
             logger.LogDebug("Input file length: {size}", inputStream.Length);
 
-            pngData = new byte[0];
             inputStream.Seek(0, SeekOrigin.Begin);
             using (BinaryReader binaryReader = new BinaryReader(inputStream))
             {
@@ -224,7 +225,7 @@
             base.StateHasChanged();
             await Task.Yield();
 
-            foreach(var kvp in dictionary)
+            foreach (var kvp in dictionary)
             {
                 await JS.InvokeVoidAsync("indexJs.parseJson", UnknownDataResolver.ResolveUnknownData(kvp.Value, kvp.Key), kvp.Key).ConfigureAwait(false);
             }
