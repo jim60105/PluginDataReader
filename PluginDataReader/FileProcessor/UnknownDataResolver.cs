@@ -29,7 +29,6 @@ namespace PluginDataReader.FileProcessor
             }
 
             Dictionary<string, object> newDict = new();
-            bool tooBig = false;
             foreach (var kvp in dict)
             {
                 object tmp = kvp.Value;
@@ -38,8 +37,8 @@ namespace PluginDataReader.FileProcessor
                 {
                     if (b.Length > 1000000)
                     {
-                        tooBig = true;
-                        break;
+                        newDict.Add(kvp.Key, $"byte[{(kvp.Value as byte[])?.Length ?? 0}] (It is too big to be parsed. Usually, it may contain some graphics.)");
+                        continue;
                     }
                     try
                     {
@@ -49,15 +48,6 @@ namespace PluginDataReader.FileProcessor
                 }
                 tmp = DeserializeDictionary(tmp);
                 newDict.Add(kvp.Key, tmp);
-            }
-
-            if (tooBig)
-            {
-                newDict.Clear();
-                foreach (var kvp2 in dict)
-                {
-                    newDict.Add(kvp2.Key, $"byte[{((byte[])kvp2.Value).Length}]");
-                }
             }
 
             return newDict;
