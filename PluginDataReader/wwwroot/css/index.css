@@ -181,3 +181,7 @@ table {
 #resultImg {
     max-height: 45vh;
 }
+
+div.json-formatter-row {
+    text-align: left;
+}

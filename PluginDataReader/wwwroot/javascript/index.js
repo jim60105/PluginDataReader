@@ -21,6 +21,20 @@
             noticeBox.style.left = "-" + viewWidth + "vw";
             noticeTitle.style.left = "0vw";
         }
+    },
+    parseJson: function (json, key) {
+        var element = document.getElementById('div' + key);
+        if (element) {
+            element.appendChild(new JSONFormatter(JSON.parse(json), 5, {
+                hoverPreviewEnabled: false,
+                hoverPreviewArrayCount: 100,
+                hoverPreviewFieldCount: 5,
+                animateOpen: true,
+                animateClose: true,
+                theme: 'dark', // or 'dark'
+                useToJSON: true // use the toJSON method to render an object as a string as available
+            }).render());
+        }
     }
 };
 
