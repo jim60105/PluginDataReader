@@ -21,22 +21,32 @@ namespace PluginDataReader.FileProcessor
             return result;
         }
 
-        internal static object? DeserializeDataRecursively(dynamic? o)
+        internal static object? DeserializeDataRecursively(dynamic? o, bool skipFirstPredication = false)
         {
             switch (o)
                 {
-                case byte[] b when b.Length == 0:
-                    return $"byte[0]";
-
-                case byte[] b:
+                case byte[] b when !skipFirstPredication:
                     try
                     {
                         return DeserializeDataRecursively(MessagePack.MessagePackSerializer.Deserialize<dynamic>(b));
                     }
-                    catch (MessagePack.MessagePackSerializationException)
+                    catch (MessagePack.MessagePackSerializationException) { }
+                    return DeserializeDataRecursively(o, true);
+
+                case byte[] b:
+                    return $"byte[{b.Length}]";
+
+                case string s when s.StartsWith('<') && s.EndsWith('>') && !skipFirstPredication:
+                    // XML
+                    try
                     {
-                        return $"byte[{b.Length}]";
+                        XmlDocument doc = new();
+                        doc.LoadXml(s);
+                        var node = doc.FirstChild;
+                        return DeserializeDataRecursively(node);
                     }
+                    catch (XmlException) { }
+                    return DeserializeDataRecursively(o, true);
 
                 case string s when s.Length > 500:
                     return $"string[{s.Length}] (Too big to display)";
@@ -63,6 +73,7 @@ namespace PluginDataReader.FileProcessor
 
                 case XmlElement xmlElement:
                     return JsonConvert.DeserializeObject<dynamic>((string)JsonConvert.SerializeXmlNode(xmlElement));
+
                 default:
                     return o;
             }

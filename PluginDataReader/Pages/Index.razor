@@ -235,9 +235,6 @@
                 {
                     case Sideloader.AutoResolver.UniversalAutoResolver.UARExtID:
                         break;
-                    case MoreAccDataResolver.ExtID:
-                        await JS.InvokeVoidAsync("indexJs.parseJson", MoreAccDataResolver.ResolveMoreAccData(kvp.Value), kvp.Key).ConfigureAwait(false);
-                        break;
                     default:
                         await JS.InvokeVoidAsync("indexJs.parseJson", UnknownDataResolver.ResolveUnknownData(kvp.Value, kvp.Key), kvp.Key).ConfigureAwait(false);
                         break;
