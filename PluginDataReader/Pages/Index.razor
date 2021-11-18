@@ -2,6 +2,7 @@
 @using System.IO;
 @using ExtensibleSaveFormat;
 @using Sideloader.AutoResolver;
+@using System.Xml
 @using static PluginDataReader.FileProcessor.TokenGuesser;
 
 @inject IJSRuntime JS
@@ -37,49 +38,48 @@
                 @if (null != dictionary && dictionary.Count > 0)
                 {
                     <div class="card-group">
-                    @foreach (var kvp in dictionary)
-                    {
-                        <div class="card">
-                            <div class="card-body">
-                                <h5 class="card-title">@kvp.Key</h5>
-                                <!--h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6-->
-                    <p class="card-text">
-                                    @switch (kvp.Key)
-                                    {
-                                        case Sideloader.AutoResolver.UniversalAutoResolver.UARExtID:
-                                            (string, string, int)[] sideloaders = UniversalAutoResolver.ResolveSideloaderData(dictionary);
-                                            @if (sideloaders.Length == 0)
-                                            {
-                                                break;
-                                            }
-                                            <table>
-                                                <thead>
-                                                    <tr>
-                                                        <th>Slot</th>
-                                                        <th>GUID</th>
-                                                        <th>Property</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    @foreach (var (GUID, Property, Slot) in sideloaders)
-                                                    {
+                        @foreach (var kvp in dictionary)
+                        {
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title">@kvp.Key</h5>
+                                    <p class="card-text">
+                                        @switch (kvp.Key)
+                                        {
+                                            case Sideloader.AutoResolver.UniversalAutoResolver.UARExtID:
+                                                (string, string, int)[] sideloaders = UniversalAutoResolver.ResolveSideloaderData(dictionary);
+                                                @if (sideloaders.Length == 0)
+                                                {
+                                                    break;
+                                                }
+                                                <table>
+                                                    <thead>
                                                         <tr>
-                                                            <td>@Slot</td>
-                                                            <td>@GUID</td>
-                                                            <td>@Property</td>
+                                                            <th>Slot</th>
+                                                            <th>GUID</th>
+                                                            <th>Property</th>
                                                         </tr>
-                                                    }
-                                                </tbody>
-                                            </table>
-                                            break;
-                                        default:
-                                            <div id=@("div"+kvp.Key) style="width: fit-content; margin: 0px auto;"></div>
-                                            break;
-                                    }
-                                </p>
+                                                    </thead>
+                                                    <tbody>
+                                                        @foreach (var (GUID, Property, Slot) in sideloaders)
+                                                        {
+                                                            <tr>
+                                                                <td>@Slot</td>
+                                                                <td>@GUID</td>
+                                                                <td>@Property</td>
+                                                            </tr>
+                                                        }
+                                                    </tbody>
+                                                </table>
+                                                break;
+                                            default:
+                                                <div id=@("div"+kvp.Key) style="width: fit-content; margin: 0px auto;"></div>
+                                                break;
+                                        }
+                                    </p>
+                                </div>
                             </div>
-                        </div>
-                    }
+                        }
                     </div>
                 }
                 else
@@ -169,7 +169,7 @@
 
     <footer class="mastfoot mt-auto text-center">
         <div class="inner">
-            v21.11.17.1 <a href="https://jim60105.github.io/KK/LICENSE" target="_blank">Copyright © by 琳(jim60105) Since 2010.</a> Theme: <a href="https://getbootstrap.com/docs/4.5/examples/" target="_blank">Bootstrap 4 Example - Cover</a>
+            v21.11.18.0 <a href="https://jim60105.github.io/KK/LICENSE" target="_blank">Copyright © by 琳(jim60105) Since 2010.</a> Theme: <a href="https://getbootstrap.com/docs/4.5/examples/" target="_blank">Bootstrap 4 Example - Cover</a>
         </div>
     </footer>
 </div>
@@ -231,7 +231,17 @@
 
             foreach (var kvp in dictionary)
             {
-                await JS.InvokeVoidAsync("indexJs.parseJson", UnknownDataResolver.ResolveUnknownData(kvp.Value, kvp.Key), kvp.Key).ConfigureAwait(false);
+                switch (kvp.Key)
+                {
+                    case Sideloader.AutoResolver.UniversalAutoResolver.UARExtID:
+                        break;
+                    case MoreAccDataResolver.ExtID:
+                        await JS.InvokeVoidAsync("indexJs.parseJson", MoreAccDataResolver.ResolveMoreAccData(kvp.Value), kvp.Key).ConfigureAwait(false);
+                        break;
+                    default:
+                        await JS.InvokeVoidAsync("indexJs.parseJson", UnknownDataResolver.ResolveUnknownData(kvp.Value, kvp.Key), kvp.Key).ConfigureAwait(false);
+                        break;
+                }
             }
 
             logger.LogInformation("Process finish");
