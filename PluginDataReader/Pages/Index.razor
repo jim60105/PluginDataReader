@@ -215,7 +215,8 @@
                         break;
                     case null:
                     default:
-                        logger.LogInformation("Cannot detect the file.");
+                        logger.LogInformation("Cannot read the file.");
+                        await JS.InvokeVoidAsync("alert", $"{Loc["No data alert"]}" ).ConfigureAwait(false);
                         break;
                 }
 

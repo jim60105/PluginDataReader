@@ -39,6 +39,7 @@
                     return Token.Coordinate;
                 }
             }
+            catch (Exception) { }
             finally
             {
                 binaryReader.BaseStream.Seek(position, SeekOrigin.Begin);

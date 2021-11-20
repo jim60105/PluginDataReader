@@ -133,4 +133,7 @@
   <data name="FrozenConfirm" xml:space="preserve">
     <value>The browser page will be completely frozen during execution. Do you want to continue?</value>
   </data>
+  <data name="No data alert" xml:space="preserve">
+    <value>Unable to read the data. Is it valid file?</value>
+  </data>
 </root>

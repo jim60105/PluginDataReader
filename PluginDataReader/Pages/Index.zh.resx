@@ -153,4 +153,7 @@
   <data name="FrozenConfirm" xml:space="preserve">
     <value>程式運算時網頁會完全凍結。要繼續嗎?</value>
   </data>
+  <data name="No data alert" xml:space="preserve">
+    <value>無法讀取數據。它是有效的存檔嗎？</value>
+  </data>
 </root>
