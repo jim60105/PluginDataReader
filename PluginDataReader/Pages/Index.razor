@@ -48,34 +48,69 @@
                                         @switch (kvp.Key)
                                         {
                                             case Sideloader.AutoResolver.UniversalAutoResolver.UARExtID:
+                                                <div class="custom-control custom-checkbox m-3">
+                                                    <input type="checkbox" class="custom-control-input" @bind-value="showDetails" id="showDetailsChk">
+                                                    &nbsp;
+                                                    <label class="custom-control-label" for="showDetailsChk">Show details</label>
+                                                </div>
+
                                                 (string, string, int)[] sideloaders = UniversalAutoResolver.ResolveSideloaderData(dictionary);
                                                 @if (sideloaders.Length == 0)
                                                 {
                                                     break;
                                                 }
-                                                <table>
-                                                    <thead>
-                                                        <tr>
-                                                            <th>Slot</th>
-                                                            <th>GUID</th>
-                                                            <th>Property</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        @foreach (var (GUID, Property, Slot) in sideloaders)
-                                                        {
+
+                                                @if (showDetails)
+                                                {
+                                                    <table>
+                                                        <thead>
                                                             <tr>
-                                                                <td>@Slot</td>
-                                                                <td>@GUID</td>
-                                                                <td>@Property</td>
+                                                                <th>Slot</th>
+                                                                <th>GUID</th>
+                                                                <th>Property</th>
                                                             </tr>
-                                                        }
-                                                    </tbody>
-                                                </table>
+                                                        </thead>
+                                                        <tbody>
+                                                            @foreach (var (GUID, Property, Slot) in sideloaders)
+                                                            {
+                                                                <tr>
+                                                                    <td>@Slot</td>
+                                                                    <td>@GUID</td>
+                                                                    <td>@Property</td>
+                                                                </tr>
+                                                            }
+                                                        </tbody>
+                                                    </table>
+                                                }
+                                                else
+                                                {
+                                                    var GUIDs = sideloaders.Select(p =>
+                                                    {
+                                                        var (GUID, Property, Slot) = p;
+                                                        return GUID;
+                                                    })
+                                                    .Distinct()
+                                                    .ToArray();
+                                                    <table>
+                                                        <thead>
+                                                            <tr>
+                                                                <th>GUID</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            @foreach (var GUID in GUIDs)
+                                                            {
+                                                                <tr>
+                                                                    <td>@GUID</td>
+                                                                </tr>
+                                                            }
+                                                        </tbody>
+                                                    </table>
+                                                }
                                                 break;
                                             default:
                                                 <div id=@("div"+kvp.Key) style="width: fit-content; margin: 0px auto;">
-                                                    @if(bytesDictionary.TryGetValue(kvp.Key, out var bytesList) && bytesList.Count>0)
+                                                    @if (bytesDictionary.TryGetValue(kvp.Key, out var bytesList) && bytesList.Count > 0)
                                                     {
                                                         foreach (var item in bytesList)
                                                         {
@@ -94,8 +129,8 @@
                                                             };
 
                                                             <img src="data:@mimeType;base64,@System.Convert.ToBase64String(item)"
-                                                                 class="img-thumbnail"
-                                                                 style="width: 10vw; max-width:150px"/>
+                                     class="img-thumbnail"
+                                     style="width: 10vw; max-width:150px" />
                                                         }
                                                     }
                                                 </div>
@@ -206,7 +241,8 @@
     private bool loading = false;
     private TimeSpan timeSpend;
     Dictionary<string, PluginData>? dictionary = null;
-    Dictionary<string, List<byte[]>> bytesDictionary = new();
+    private Dictionary<string, List<byte[]>> bytesDictionary = new();
+    private bool showDetails = false;
 
     private async void OnSelectedFile(InputFileChangeEventArgs e)
     {
@@ -242,7 +278,7 @@
                     case null:
                     default:
                         logger.LogInformation("Cannot read the file.");
-                        await JS.InvokeVoidAsync("alert", $"{Loc["No data alert"]}" ).ConfigureAwait(false);
+                        await JS.InvokeVoidAsync("alert", $"{Loc["No data alert"]}").ConfigureAwait(false);
                         break;
                 }
 
