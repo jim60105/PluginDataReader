@@ -4,6 +4,7 @@
 @using Sideloader.AutoResolver;
 @using System.Xml
 @using static PluginDataReader.FileProcessor.TokenGuesser;
+@using CaptiveReality.IO.Filesystem;
 
 @inject IJSRuntime JS
 @inject ILogger<Index> logger
@@ -34,7 +35,7 @@
             </p>
             @if (pngData.Length > 0)
             {
-                <img id="resultImg" src="data:image;base64,@System.Convert.ToBase64String(pngData)" />
+                <img id="resultImg" src="data:image/png;base64,@System.Convert.ToBase64String(pngData)" />
                 @if (null != dictionary && dictionary.Count > 0)
                 {
                     <div class="card-group">
@@ -73,7 +74,31 @@
                                                 </table>
                                                 break;
                                             default:
-                                                <div id=@("div"+kvp.Key) style="width: fit-content; margin: 0px auto;"></div>
+                                                <div id=@("div"+kvp.Key) style="width: fit-content; margin: 0px auto;">
+                                                    @if(bytesDictionary.TryGetValue(kvp.Key, out var bytesList) && bytesList.Count>0)
+                                                    {
+                                                        foreach (var item in bytesList)
+                                                        {
+                                                            if (item.Length == 0) continue;
+                                                            ImageDetection.ImageFormat imageFormat = ImageDetection.GetImageFormat(item);
+                                                            if (imageFormat == ImageDetection.ImageFormat.UNKNOWN) continue;
+
+                                                            var mimeType = imageFormat switch
+                                                            {
+                                                                ImageDetection.ImageFormat.PNG => "image/png",
+                                                                ImageDetection.ImageFormat.JPEG => "image/jpeg",
+                                                                ImageDetection.ImageFormat.BMP => "image/bmp",
+                                                                ImageDetection.ImageFormat.GIF => "image/gif",
+                                                                ImageDetection.ImageFormat.TIFF => "image/tiff",
+                                                                _ => "image"
+                                                            };
+
+                                                            <img src="data:@mimeType;base64,@System.Convert.ToBase64String(item)"
+                                                                 class="img-thumbnail"
+                                                                 style="width: 10vw; max-width:150px"/>
+                                                        }
+                                                    }
+                                                </div>
                                                 break;
                                         }
                                     </p>
@@ -169,7 +194,7 @@
 
     <footer class="mastfoot mt-auto text-center">
         <div class="inner">
-            v21.11.20.1 <a href="https://github.com/jim60105/PluginDataReader/blob/master/LICENSE.md" target="_blank">Copyright © by 琳(jim60105) Since 2010.</a> Theme: <a href="https://getbootstrap.com/docs/4.5/examples/" target="_blank">Bootstrap 4 Example - Cover</a>
+            v22.07.01.0 <a href="https://github.com/jim60105/PluginDataReader/blob/master/LICENSE.md" target="_blank">Copyright © by 琳(jim60105) Since 2010.</a> Theme: <a href="https://getbootstrap.com/docs/4.5/examples/" target="_blank">Bootstrap 4 Example - Cover</a>
         </div>
     </footer>
 </div>
@@ -181,6 +206,7 @@
     private bool loading = false;
     private TimeSpan timeSpend;
     Dictionary<string, PluginData>? dictionary = null;
+    Dictionary<string, List<byte[]>> bytesDictionary = new();
 
     private async void OnSelectedFile(InputFileChangeEventArgs e)
     {
@@ -230,6 +256,7 @@
             base.StateHasChanged();
             await Task.Yield();
 
+            bytesDictionary.Clear();
             foreach (var kvp in dictionary)
             {
                 switch (kvp.Key)
@@ -237,7 +264,8 @@
                     case Sideloader.AutoResolver.UniversalAutoResolver.UARExtID:
                         break;
                     default:
-                        await JS.InvokeVoidAsync("indexJs.parseJson", UnknownDataResolver.ResolveUnknownData(kvp.Value, kvp.Key), kvp.Key).ConfigureAwait(false);
+                        await JS.InvokeVoidAsync("indexJs.parseJson", UnknownDataResolver.ResolveUnknownData(kvp.Value, kvp.Key, out var bytesList), kvp.Key);
+                        bytesDictionary.Add(kvp.Key, bytesList);
                         break;
                 }
             }
