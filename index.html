@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html class="h-100">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+    <meta content='Plugin Data Reader - Read out all ExtendedSave Plugin Data in the png file. This is very suitable for checking the Sideloader mods used. 讀出存檔中的所有ExtendedSaveData。這很適合用於檢查使用到的Sideloader mods。 Koikatsu plugin data reader' name='description' />
+    <meta content='https://plugindatareader.maki0419.com/' property='og:url' />
+    <meta content='Plugin Data Reader' property='og:title' />
+    <meta content='Plugin Data Reader - Read out all ExtendedSave Plugin Data in the png file. This is very suitable for checking the Sideloader mods used. 讀出存檔中的所有ExtendedSaveData。這很適合用於檢查使用到的Sideloader mods。 Koikatsu plugin data reader' property='og:description' />
+    <meta content='https://plugindatareader.maki0419.com/preview.png' property='og:image' />
+    <meta content='Plugin Data Reader - 琳的備忘手札' property='og:site_name' />
+    <meta content='@jim60105' name='twitter:site' />
+    <meta content='@jim60105' name='twitter:creator' />
+    <link href='https://plugindatareader.maki0419.com/' rel='canonical' />
+    <meta content='website' property='og:type' />
+    <meta content='https://plugindatareader.maki0419.com/preview.png' property='og:image' />
+    <meta content='https://plugindatareader.maki0419.com/preview.png' name='twitter:image' />
+    <meta content='summary_large_image' name='twitter:card' />
+    <meta content='all' name='robots' />
+
+    <title>PluginDataReader</title>
+    <base href="/" />
+    <link href="css/bootstrap/bootstrap.min.css" rel="stylesheet" />
+    <link href="css/app.css" rel="stylesheet" />
+    <link href="css/index.css" rel="stylesheet" />
+    <link href="PluginDataReader.styles.css" rel="stylesheet" />
+    <link href="manifest.json" rel="manifest" />
+    <link rel="apple-touch-icon" sizes="512x512" href="favicon.png" />
+
+    <!--https://github.com/mohsen1/json-formatter-js-->
+    <script src="javascript/json-formatter.umd.js"></script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-5MCR10S3XH"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'G-5MCR10S3XH');
+    </script>
+</head>
+
+<body>
+    <div class="w-100 h-100" style="overflow-y: scroll">
+        <div id="app" class="w-100 h-100">Loading...</div>
+    </div>
+
+    <div id="blazor-error-ui">
+        An unhandled error has occurred.
+        <a href="" class="reload">Reload</a>
+        <a class="dismiss">🗙</a>
+    </div>
+    <script src="_framework/blazor.webassembly.js"></script>
+    <script src="javascript/index.js"></script>
+
+    <script>navigator.serviceWorker.register('service-worker.js');</script>
+</body>
+
+</html>
