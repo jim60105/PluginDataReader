@@ -109,7 +109,7 @@
                                                 }
                                                 break;
                                             default:
-                                                <div id=@("div"+kvp.Key) style="width: fit-content; margin: 0px auto;">
+                                                <div id=@("divPicContainer"+kvp.Key)  style="width: fit-content; margin: 0px auto;">
                                                     @if (bytesDictionary.TryGetValue(kvp.Key, out var bytesList) && bytesList.Count > 0)
                                                     {
                                                         foreach (var item in bytesList)
@@ -133,6 +133,8 @@
                                      style="width: 10vw; max-width:150px" />
                                                         }
                                                     }
+                                                </div>
+                                                <div id=@("div"+kvp.Key) style="width: fit-content; margin: 0px auto;">
                                                 </div>
                                                 break;
                                         }
@@ -300,7 +302,7 @@
                     case Sideloader.AutoResolver.UniversalAutoResolver.UARExtID:
                         break;
                     default:
-                        await JS.InvokeVoidAsync("indexJs.parseJson", UnknownDataResolver.ResolveUnknownData(kvp.Value, kvp.Key, out var bytesList), kvp.Key);
+                        await JS.InvokeVoidAsync("indexJs.parseJson", UnknownDataResolver.ResolveUnknownData(kvp.Value, kvp.Key, out var bytesList), kvp.Key).ConfigureAwait(false);
                         bytesDictionary.Add(kvp.Key, bytesList);
                         break;
                 }
