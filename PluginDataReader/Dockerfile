@@ -11,7 +11,7 @@ RUN dotnet build "PluginDataReader.csproj" -c Release -o /app/build
 FROM build AS publish
 RUN dotnet publish "PluginDataReader.csproj" -c Release -o /app/publish
 
-FROM nginx:alpine AS final
+FROM nginx:1.25.3-alpine3.18 AS final
 EXPOSE 80
 WORKDIR /usr/share/nginx/html
 ENV BLAZOR_ENVIRONMENT=Production
