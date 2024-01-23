@@ -1,4 +1,4 @@
-﻿.bd-placeholder-img {
+.bd-placeholder-img {
     font-size: 1.125rem;
     text-anchor: middle;
     -webkit-user-select: none;
@@ -30,7 +30,7 @@
         margin: 8px;
         border-radius: 50%;
         border: 6px solid #808080;
-        border-color: #808080 transparent #808080 transparent;
+        border-color: #808080 transparent;
         animation: lds-dual-ring 1.2s linear infinite;
     }
 
