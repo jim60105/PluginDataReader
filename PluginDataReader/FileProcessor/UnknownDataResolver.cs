@@ -21,7 +21,7 @@ namespace PluginDataReader.FileProcessor
             }
 
             Console.WriteLine(result);
-            bytesList = _bytesList;
+            bytesList = [.. _bytesList];
             return result;
         }
 
