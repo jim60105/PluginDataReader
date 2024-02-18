@@ -1,6 +1,7 @@
 # Plugin Data Reader 插件資料讀取器
 
 [![CodeFactor](https://www.codefactor.io/repository/github/jim60105/plugindatareader/badge/master)](https://www.codefactor.io/repository/github/jim60105/plugindatareader/overview/master)
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fjim60105%2FPluginDataReader.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fjim60105%2FPluginDataReader?ref=badge_shield)
 
 ![image](PluginDataReader/wwwroot/preview.png)
 
@@ -29,3 +30,6 @@ This program is free software: you can redistribute it and/or modify it under th
 This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
 
 You should have received a copy of the GNU Affero General Public License along with this program. If not, see <https://www.gnu.org/licenses/>.
+
+
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fjim60105%2FPluginDataReader.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Fjim60105%2FPluginDataReader?ref=badge_large)
