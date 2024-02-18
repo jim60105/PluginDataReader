@@ -1,5 +1,5 @@
-﻿using PluginDataReader.Models;
-using MessagePack;
+﻿using MessagePack;
+using PluginDataReader.Models;
 
 namespace ExtensibleSaveFormat
 {
@@ -57,7 +57,6 @@ namespace ExtensibleSaveFormat
                 }
                 else
                     return new Dictionary<string, PluginData>();
-
             }
             catch (EndOfStreamException)
             {
@@ -71,7 +70,7 @@ namespace ExtensibleSaveFormat
             }
         }
 
-        public static Dictionary<string, PluginData>  SceneInfoLoadHook(BinaryReader br)
+        public static Dictionary<string, PluginData> SceneInfoLoadHook(BinaryReader br)
         {
             try
             {

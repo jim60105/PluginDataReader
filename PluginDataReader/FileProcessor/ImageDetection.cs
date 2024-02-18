@@ -32,7 +32,6 @@ namespace CaptiveReality.IO.Filesystem
 {
     public class ImageDetection
     {
-
         public enum ImageFormat
         {
             BMP,
@@ -42,7 +41,7 @@ namespace CaptiveReality.IO.Filesystem
             PNG,
             UNKNOWN
         }
-        
+
         /// <summary>
         /// If a file exists, Read all bytes from it 
         /// </summary>
@@ -89,7 +88,6 @@ namespace CaptiveReality.IO.Filesystem
         /// <returns>ImageFormat</returns>
         public static ImageFormat GetImageFormat(byte[] byteArray)
         {
-
             const int INT_SIZE = 4; // We only need to check the first four bytes of the file / byte array.
 
             var bmp = System.Text.Encoding.ASCII.GetBytes("BM");     // BMP
@@ -102,7 +100,7 @@ namespace CaptiveReality.IO.Filesystem
 
             // Copy the first 4 bytes into our buffer 
             var buffer = new byte[INT_SIZE];
-            System.Buffer.BlockCopy(byteArray, 0, buffer, 0, INT_SIZE); 
+            System.Buffer.BlockCopy(byteArray, 0, buffer, 0, INT_SIZE);
 
             if (bmp.SequenceEqual(buffer.Take(bmp.Length)))
                 return ImageFormat.BMP;
@@ -127,6 +125,5 @@ namespace CaptiveReality.IO.Filesystem
 
             return ImageFormat.UNKNOWN;
         }
-
     }
 }
