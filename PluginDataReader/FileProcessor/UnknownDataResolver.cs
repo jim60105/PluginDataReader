@@ -7,7 +7,7 @@ namespace PluginDataReader.FileProcessor
 {
     public static class UnknownDataResolver
     {
-        private static readonly List<byte[]> _bytesList = new();
+        private static readonly List<byte[]> _bytesList = [];
 
         public static string ResolveUnknownData(PluginData? pluginData, string ExtID, out List<byte[]> bytesList)
         {
@@ -25,7 +25,7 @@ namespace PluginDataReader.FileProcessor
             return result;
         }
 
-        private static object? DeserializeDataRecursively(dynamic o, bool skipFirstPredication = false)
+        private static object? DeserializeDataRecursively(dynamic? o, bool skipFirstPredication = false)
         {
             switch (o)
             {
@@ -57,7 +57,7 @@ namespace PluginDataReader.FileProcessor
                     return $"string[{s.Length}] (Too big to display)";
 
                 case IDictionary dict when dict.Count != 0:
-                    Dictionary<object, object?> newDict = new();
+                    Dictionary<object, object?> newDict = [];
                     foreach (DictionaryEntry kvp in dict)
                     {
                         object? tmp = kvp.Value;
@@ -68,7 +68,7 @@ namespace PluginDataReader.FileProcessor
                     return newDict;
 
                 case object[] oArray when oArray.Length != 0:
-                    List<object?> list = new();
+                    List<object?> list = [];
                     foreach (object _o in oArray)
                     {
                         list.Add(DeserializeDataRecursively(_o));

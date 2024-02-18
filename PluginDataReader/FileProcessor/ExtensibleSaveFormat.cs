@@ -6,15 +6,15 @@ namespace ExtensibleSaveFormat
     public static class ExtendedSave
     {
         /// <summary> Marker that indicates the extended save region on cards </summary>
-        public const string Marker = "KKEx";
+        public const string marker = "KKEx";
         /// <summary> Version of the extended save data on cards </summary>
-        public const int DataVersion = 3;
+        public const int dataVersion = 3;
 
         public static Dictionary<string, PluginData> ChaFileLoadFileHook(BlockHeader header, BinaryReader br)
         {
-            BlockHeader.Info info = header.SearchInfo(Marker);
+            BlockHeader.Info info = header.SearchInfo(marker);
 
-            if (info != null && info.version == DataVersion.ToString())
+            if (info != null && info.version == dataVersion.ToString())
             {
                 long originalPosition = br.BaseStream.Position;
                 long basePosition = originalPosition - header.lstInfo.Sum(x => x.size);
@@ -31,12 +31,12 @@ namespace ExtensibleSaveFormat
                 }
                 catch (Exception)
                 {
-                    return new Dictionary<string, PluginData>();
+                    return [];
                 }
             }
             //else
             //{
-            return new Dictionary<string, PluginData>();
+            return [];
             //}
         }
         public static Dictionary<string, PluginData> ChaFileCoordinateLoadHook(BinaryReader br)
@@ -48,7 +48,7 @@ namespace ExtensibleSaveFormat
 
                 int length = br.ReadInt32();
 
-                if (marker == Marker && version == DataVersion && length > 0)
+                if (marker == ExtendedSave.marker && version == dataVersion && length > 0)
                 {
                     byte[] bytes = br.ReadBytes(length);
                     var dictionary = MessagePackSerializer.Deserialize<Dictionary<string, PluginData>>(bytes);
@@ -56,17 +56,17 @@ namespace ExtensibleSaveFormat
                     return dictionary;
                 }
                 else
-                    return new Dictionary<string, PluginData>();
+                    return [];
             }
             catch (EndOfStreamException)
             {
                 // Incomplete/non-existant data
-                return new Dictionary<string, PluginData>();
+                return [];
             }
             catch (InvalidOperationException)
             {
                 // Invalid/unexpected deserialized data
-                return new Dictionary<string, PluginData>();
+                return [];
             }
         }
 
@@ -79,7 +79,7 @@ namespace ExtensibleSaveFormat
 
                 int length = br.ReadInt32();
 
-                if (marker.Equals(Marker) && length > 0)
+                if (marker.Equals(ExtendedSave.marker) && length > 0)
                 {
                     byte[] bytes = br.ReadBytes(length);
                     return MessagePackSerializer.Deserialize<Dictionary<string, PluginData>>(bytes);
@@ -93,7 +93,7 @@ namespace ExtensibleSaveFormat
             {
                 /* Invalid/unexpected deserialized data */
             }
-            return new Dictionary<string, PluginData>();
+            return [];
         }
     }
 }
